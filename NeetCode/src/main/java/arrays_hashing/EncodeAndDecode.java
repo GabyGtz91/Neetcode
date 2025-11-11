@@ -21,24 +21,38 @@ public class EncodeAndDecode {
         }
 
     }
-
     public static String encode(List<String> strs) {
-        String stringEncode = "";
-        for (String s : strs) {
-            stringEncode = stringEncode + s + "¬";
+        if(strs.size() > 0 && strs.size() < 100) {
+            String cadena = new String();
+
+            for (String s : strs) {
+                if(s.length() >=0 && s.length() <200) {
+                    cadena = cadena + "¬" + s;
+                } else {
+                    return "";
+                }
+            }
+
+            String encodeCadena = Base64.getEncoder().encodeToString(cadena.getBytes());
+
+            return encodeCadena;
+        } else {
+            return "";
         }
-        stringEncode = Base64.getEncoder().encodeToString(stringEncode.getBytes());
-        return stringEncode;
     }
 
     public static List<String> decode(String str) {
         byte[] decodedBytes = Base64.getDecoder().decode(str);
 
         String cadena = new String(decodedBytes);
+
         String[] cadenaSeparada = cadena.split("¬");
-
         List<String> listaDecodificada = new ArrayList<>(Arrays.asList(cadenaSeparada));
-
+        if(listaDecodificada.size() > 0) {
+            listaDecodificada.remove("");
+        } else {
+            listaDecodificada.add("");
+        }
         return listaDecodificada;
     }
 }
